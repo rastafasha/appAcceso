@@ -43,6 +43,7 @@ export class RegistroComponent implements OnInit {
     this.registroForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
+      numdoc: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{8,15}$')]], // Acepta números de 8 a 15 dígitos
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -77,9 +78,9 @@ export class RegistroComponent implements OnInit {
     }
 
     // Extraemos la data limpia del formulario lista para enviar a MongoDB Atlas
-    const { first_name, last_name, email, telefono, password } = this.registroForm.value;
+    const { first_name, last_name, email,numdoc, telefono, password } = this.registroForm.value;
     
-    const payloadNode = { first_name, last_name, email, telefono, password, role: 'PROPIETARIO' };
+    const payloadNode = { first_name, last_name, email,numdoc, telefono, password, role: 'PROPIETARIO' };
     console.log('Payload de registro listo para tu API Node.js:', payloadNode);
     this.isLoading = true;
     this.authService.crearUsuario(this.registroForm.value).subscribe(

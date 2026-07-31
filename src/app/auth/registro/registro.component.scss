@@ -57,7 +57,12 @@ ion-card {
 
   ion-input {
     font-size: 0.9rem;
+    color: #2c3e50 !important;   // Color para el texto estándar de CSS
+    --color: #2c3e50 !important; // Propiedad interna de Ionic para el input nativo
+    --placeholder-color: #95a5a6; 
   }
+
+  
 }
 
 .submit-btn {

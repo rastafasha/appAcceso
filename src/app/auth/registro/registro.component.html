@@ -26,6 +26,14 @@
           </div>
         </div>
 
+        <!-- Campo numdoc -->
+        <ion-item lines="none" class="custom-input ion-margin-top" [class.input-error]="isInvalid('correo')">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input type="text" placeholder="numdoc" formControlName="numdoc"></ion-input>
+        </ion-item>
+        <div *ngIf="isInvalid('numdoc')" class="error-message">
+          <ion-text color="danger">Ingresa un identificación válido</ion-text>
+        </div>
         <!-- Campo Correo -->
         <ion-item lines="none" class="custom-input ion-margin-top" [class.input-error]="isInvalid('correo')">
           <ion-icon name="mail-outline" slot="start"></ion-icon>
