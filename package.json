@@ -21,7 +21,7 @@
     "@capacitor/share": "^8.0.1",
     "@ionic/angular": "^8.8.16",
     "@zxing/library": "^0.23.0",
-    "@zxing/ngx-scanner": "^22.0.1",
+    "@zxing/ngx-scanner": "^19.0.0",
     "angularx-qrcode": "^22.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

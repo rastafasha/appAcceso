@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Property } from '../models/property';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 const baseUrl = environment.apiUrl;
 
@@ -11,6 +11,7 @@ const baseUrl = environment.apiUrl;
 })
 export class PropertyService {
   public property?: Property;
+  
 
   constructor(private http: HttpClient) { }
 
@@ -79,6 +80,8 @@ export class PropertyService {
     const url = `${baseUrl}/property/borrarv/${_id}/vehiculo/${vehiculoId}`;
     return this.http.delete(url, this.headers);
   }
+
+  
 
   
 }

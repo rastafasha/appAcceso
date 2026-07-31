@@ -5,11 +5,11 @@
 export const environment = {
   production: false,
   //apirest local
-  apiUrl: "http://localhost:3000/api",
+  // apiUrl: "http://localhost:3000/api",
   //remoto
-  // apiUrl: "https://back-node-malcolm.onrender.com/api",
-  // mediaUrlRemoto: 'https://res.cloudinary.com/dmv6aukai/image/upload/v1741275492/malcolmfolio/uploads',
-  
+  apiUrl: "https://back-node-qracceso.onrender.com/api",
+  mediaUrlRemoto: 'https://res.cloudinary.com/dmv6aukai/image/upload/v1741275492/appaccesoqr/uploads',
+
   clientId: '',
   clientGoogle: ' ',
 
