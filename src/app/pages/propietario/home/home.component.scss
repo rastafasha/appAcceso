@@ -1,0 +1,97 @@
+.dashboard-container {
+  --background: #f4f6f9;
+}
+
+.welcome-section {
+  margin-top: 15px;
+  .avatar-center {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 10px auto;
+    border: 3px solid var(--ion-color-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  h2 { font-size: 1.4rem; font-weight: 700; color: #2c3e50; margin: 0; }
+  p { font-size: 0.85rem; color: #7f8c8d; margin: 2px 0 0 0; font-weight: 500; }
+}
+
+// Estilo del contenedor del selector de carros
+.vehicle-selector-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  max-width: 340px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.custom-select-item {
+  --background: #f5f6fa;
+  --border-radius: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+  
+  ion-select {
+    width: 100%;
+    font-size: 0.92rem;
+  }
+}
+
+// Caja de entrada para placa eventual
+.temporal-plate-box {
+  .custom-input {
+    --background: #fff5f5;
+    border: 1px dashed var(--ion-color-danger);
+    --border-radius: 8px;
+    
+    ion-input {
+      font-weight: 700;
+      color: #2c3e50;
+      text-transform: uppercase;
+      text-align: center;
+    }
+  }
+  .hint-text {
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    margin: 6px 0 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    ion-icon { color: var(--ion-color-danger); }
+  }
+}
+
+.qr-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  max-width: 340px;
+  margin: 16px auto 0 auto;
+
+  .qr-wrapper {
+    display: inline-block;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e8f8f0;
+  color: #10ac84;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.actions-grid {
+  max-width: 340px;
+  margin: 20px auto 0 auto;
+  .action-btn { --border-radius: 10px; font-weight: 600; height: 46px; }
+}

@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title>Mi Acceso</ion-title>
+    <ion-title>Mi Acceso Residencial</ion-title>
     <ion-button slot="end" fill="clear" color="light" (click)="logout()">
       <ion-icon name="log-out-outline"></ion-icon>
     </ion-button>
@@ -9,7 +9,7 @@
 
 <ion-content class="ion-padding ion-text-center dashboard-container">
 
-  <!-- Sección de Perfil del Residente -->
+  <!-- Encabezado del Residente -->
   <div class="welcome-section ion-margin-bottom">
     <ion-avatar class="avatar-center">
       <img src="assets/images/default.png" alt="Avatar" />
@@ -18,36 +18,73 @@
     <p>Residente Autorizado</p>
   </div>
 
-  <!-- Tarjeta Contenedora del Código QR Permanente -->
-  <ion-card class="qr-card ion-padding">
-    <ion-card-content>
-      <p class="qr-instruction">Presenta este código frente al lector de la entrada para abrir la puerta</p>
+  <!-- 🌟 CAJA SELECTORA DE TRANSPORTE DE HOY -->
+  <ion-card class="vehicle-selector-card ion-padding">
+    <ion-item lines="none" class="custom-select-item">
+      <ion-icon [name]="vehiculoSeleccionado === 'CAMINANDO' ? 'walk-outline' : 'car-outline'" slot="start" color="primary"></ion-icon>
+      
+      <ion-select 
+        label="¿Cómo ingresas/sales hoy?" 
+        label-placement="stacked"
+        [(ngModel)]="vehiculoSeleccionado" 
+        (ionChange)="actualizarCodigoQR()">
+        
+        <ion-select-option value="CAMINANDO">🚶 Voy caminando / Peatonal</ion-select-option>
+        
+        <!-- Recorremos dinámicamente los carros que el usuario guardó en su Perfil -->
+        <ion-select-option *ngFor="let auto of vehiculosFijos" [value]="auto.placa">
+          🚗 {{ auto.marca }} {{ auto.modelo }} ({{ auto.placa | uppercase }})
+        </ion-select-option>
+        
+        <ion-select-option value="OTRO">🚐 Otro vehículo (Especificar Placa)</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-      <!-- Componente del Código QR -->
+    <!-- Campo extra condicional si el usuario marca "Otro" (Ej: para la van) -->
+    @if (vehiculoSeleccionado === 'OTRO') {
+      <div class="temporal-plate-box ion-margin-top">
+        <ion-item lines="none" class="custom-input">
+          <ion-input 
+            type="text" 
+            placeholder="Escribe la placa del auto de hoy" 
+            [(ngModel)]="placaTemporal"
+            (ionInput)="actualizarCodigoQR()">
+          </ion-input>
+        </ion-item>
+        <p class="hint-text">
+          <ion-icon name="alert-circle-outline"></ion-icon> 
+          El vigilante validará físicamente esta placa al llegar.
+        </p>
+      </div>
+    }
+  </ion-card>
+
+  <!-- Tarjeta con el Código QR Dinámico (Se redibuja al cambiar el select) -->
+  <ion-card class="qr-card ion-padding ion-margin-top">
+    <ion-card-content>
       <div class="qr-wrapper" *ngIf="qrValue">
-        <qrcode [qrdata]="qrValue" [width]="220" [errorCorrectionLevel]="'H'" [colorDark]="'#1e3c72'"
-          [colorLight]="'#ffffff'" [elementType]="'canvas'">
+        <qrcode
+          [qrdata]="qrValue"
+          [width]="210"
+          [errorCorrectionLevel]="'H'"
+          [colorDark]="'#1e3c72'"
+          [colorLight]="'#ffffff'"
+          [elementType]="'canvas'">
         </qrcode>
       </div>
 
       <div class="status-badge ion-margin-top">
         <ion-icon name="shield-checkmark-outline"></ion-icon>
-        <ion-label>Pase Permanente Activo</ion-label>
+        <ion-label>Código de Entrada Sincronizado</ion-label>
       </div>
     </ion-card-content>
   </ion-card>
 
-  <!-- Botones de Acciones Rápidas -->
+  <!-- Acciones complementarias -->
   <div class="actions-grid ion-margin-top">
-    <ion-button expand="block" color="secondary" routerLink="/propietario/generar-visita" class="action-btn">
+    <ion-button expand="block" color="secondary" routerLink="/propietario/visitas" class="action-btn">
       <ion-icon name="person-add-outline" slot="start"></ion-icon>
-      Crear Pase de Visita
-    </ion-button>
-
-    <ion-button expand="block" fill="outline" color="primary" routerLink="/propietario/perfil"
-      class="action-btn ion-margin-top">
-      <ion-icon name="car-outline" slot="start"></ion-icon>
-      Mis Vehículos Fijos
+      Gestionar Mis Invitados
     </ion-button>
   </div>
 
