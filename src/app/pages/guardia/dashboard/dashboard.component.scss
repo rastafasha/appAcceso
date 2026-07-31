@@ -1,0 +1,107 @@
+.dashboard-guardia-bg {
+  --background: #f4f6f9;
+}
+
+.dashboard-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.guard-welcome {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  margin-top: 10px;
+
+  p { margin: 0; font-size: 0.8rem; color: #7f8c8d; text-transform: uppercase; font-weight: 600; }
+  h3 { margin: 2px 0 6px 0; font-size: 1.25rem; font-weight: 700; color: #2c3e50; }
+}
+
+// Tarjeta del disparador del Escáner QR
+.scan-action-card {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(30, 60, 114, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:active {
+    transform: scale(0.98); // Efecto click táctil
+  }
+
+  h2 { font-size: 1.35rem; font-weight: 800; margin: 14px 0 4px 0; letter-spacing: 0.5px; }
+  p { font-size: 0.85rem; opacity: 0.85; margin: 0; }
+}
+
+// Contenedor animado del ícono del escáner
+.pulse-icon-container {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 18px;
+  border-radius: 50%;
+  position: relative;
+  
+  .scan-main-icon {
+    font-size: 3rem;
+    color: #00e676; // Verde brillante de acción
+  }
+}
+
+.block-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #576574;
+  margin: 24px 0 12px 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+  ion-icon { color: var(--ion-color-primary); font-size: 1.1rem; }
+}
+
+// Tarjetas de métricas del turno
+.metric-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  margin: 0;
+
+  ion-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  h3 { font-size: 1.7rem; font-weight: 800; margin: 0; color: #2c3e50; }
+  p { font-size: 0.82rem; color: #7f8c8d; margin: 2px 0 0 0; font-weight: 600; }
+}
+
+// Bitácora rápida inferior
+.feed-list {
+  background: transparent;
+  padding: 0;
+}
+
+.feed-item {
+  --background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+  --padding-start: 12px;
+
+  h4 { font-size: 0.95rem; font-weight: 700; color: #2c3e50; margin: 0 0 2px 0; }
+  .name { font-size: 0.85rem; color: #576574; margin: 0; }
+  .plate { font-size: 0.8rem; font-weight: 700; color: #7f8c8d; margin: 2px 0 0 0; }
+  
+  .time-stamp {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #95a5a6;
+    background: #f4f6f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+}
+
+.empty-feed-text {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  padding-left: 4px;
+}

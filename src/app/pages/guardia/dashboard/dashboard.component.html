@@ -1,3 +1,86 @@
-<p>
-  dashboard works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Panel de Control - Garita</ion-title>
+    <ion-button slot="end" fill="clear" color="light" (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding dashboard-guardia-bg">
+  <div class="dashboard-wrapper">
+
+    <!-- Mensaje de bienvenida del oficial de turno -->
+    <div class="guard-welcome">
+      <p>Oficial en turno:</p>
+      <h3>{{ nombreGuardia || 'Cargando...' }}</h3>
+      <ion-badge color="dark">Monitoreo PWA Activo</ion-badge>
+    </div>
+
+    <!-- 🌟 ACCIÓN PRINCIPAL: BOTÓN GIGANTE PARA IR AL ESCÁNER -->
+    <ion-card class="scan-action-card ion-margin-top" routerLink="/guardia/scanner">
+      <ion-card-content class="ion-text-center">
+        <div class="pulse-icon-container">
+          <ion-icon name="scan-outline" class="scan-main-icon"></ion-icon>
+        </div>
+        <h2>ESCANEAR CÓDIGO QR</h2>
+        <p>Presiona aquí para activar la cámara web y validar un ingreso</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- METRICAS DEL TURNO (Lado a lado en columnas) -->
+    <h3 class="block-title"><ion-icon name="checkmark-circle-outline"></ion-icon> Resumen del Día</h3>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <!-- Tarjeta Propietarios -->
+        <ion-col size="6" class="ion-padding-end">
+          <ion-card class="metric-card clear-metric">
+            <ion-card-content>
+              <ion-icon name="car-outline" color="primary"></ion-icon>
+              <h3>{{ totalPropietarios }}</h3>
+              <p>Residentes</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Tarjeta Visitas -->
+        <ion-col size="6" class="ion-padding-start">
+          <ion-card class="metric-card visitor-metric">
+            <ion-card-content>
+              <ion-icon name="people-outline" color="secondary"></ion-icon>
+              <h3>{{ totalVisitas }}</h3>
+              <p>Invitados</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- FLUJO EN TIEMPO REAL: ÚLTIMAS ENTRADAS -->
+    <h3 class="block-title"><ion-icon name="time-outline"></ion-icon> Últimos Ingresos Concedidos</h3>
+    <ion-list class="feed-list" *ngIf="ultimosAccesos.length > 0; else sinMovimientos">
+      
+      <ion-item lines="none" class="feed-item" *ngFor="let acceso of ultimosAccesos">
+        <ion-icon 
+          [name]="acceso.tipo === 'PROPIETARIO' ? 'car-outline' : 'people-outline'" 
+          [color]="acceso.tipo === 'PROPIETARIO' ? 'primary' : 'secondary'"
+          slot="start">
+        </ion-icon>
+        
+        <ion-label>
+          <h4>Casa {{ acceso.casa }}</h4>
+          <p class="name">{{ acceso.visitante || 'Residente Permanente' }}</p>
+          <p class="plate" *ngIf="acceso.vehiculo?.placa">🚗 Placa: {{ acceso.vehiculo.placa | uppercase }}</p>
+        </ion-label>
+
+        <span slot="end" class="time-stamp">{{ acceso.fechaUso | date:'HH:mm' }}</span>
+      </ion-item>
+
+    </ion-list>
+
+    <ng-template #sinMovimientos>
+      <p class="empty-feed-text">No se registran movimientos en las últimas horas.</p>
+    </ng-template>
+
+  </div>
+</ion-content>

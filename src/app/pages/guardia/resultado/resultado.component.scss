@@ -1,0 +1,52 @@
+.result-container {
+  --background: #11141a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-box {
+  text-align: center;
+  color: #ffffff;
+  margin-top: 100px;
+}
+
+.status-card {
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  max-width: 420px;
+  margin: 20px auto;
+
+  .big-icon { font-size: 6rem; }
+  h1 { font-size: 1.8rem; font-weight: 900; margin: 15px 0 5px 0; }
+  
+  .details-box {
+    text-align: left;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    border-radius: 12px;
+    p { margin: 6px 0; font-size: 0.95rem; }
+  }
+
+  .plate-box {
+    background: #ffffff;
+    color: #2c3e50;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    span { font-size: 0.75rem; font-weight: 800; color: #7f8c8d; }
+    h2 { font-size: 1.9rem; font-weight: 900; margin: 2px 0; color: #1e3c72; }
+  }
+  .pedestrian h2 { font-size: 1.2rem; color: #27ae60; }
+
+  .action-btn { --border-radius: 8px; font-weight: 700; height: 46px; margin-top: 24px; color: #2c3e50 !important; }
+}
+
+.success-view { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+.danger-view { 
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); 
+  .error-box { background: rgba(0,0,0,0.15); padding: 16px; border-radius: 12px; text-align: left; }
+}

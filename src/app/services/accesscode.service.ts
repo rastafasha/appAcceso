@@ -38,8 +38,9 @@ export class AccesscodeService {
    getVisitasUser(propietarioId: string) {
     const url = `${baseUrl}/access/visitas_propietario/${propietarioId}`;
     return this.http.get<any>(url, this.headers)
-      // .pipe(
-      //   map((resp:{ok: boolean, property: Property}) => resp.property)
-      //   );
+  }
+   getBitacoraHoy() {
+    const url = `${baseUrl}/access/bitacora-hoy`;
+    return this.http.get<any>(url, this.headers)
   }
 }

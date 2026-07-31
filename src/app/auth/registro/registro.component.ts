@@ -79,7 +79,7 @@ export class RegistroComponent implements OnInit {
     // Extraemos la data limpia del formulario lista para enviar a MongoDB Atlas
     const { first_name, last_name, email, telefono, password } = this.registroForm.value;
     
-    const payloadNode = { first_name, last_name, email, telefono, password, rol: 'PROPIETARIO' };
+    const payloadNode = { first_name, last_name, email, telefono, password, role: 'PROPIETARIO' };
     console.log('Payload de registro listo para tu API Node.js:', payloadNode);
     this.isLoading = true;
     this.authService.crearUsuario(this.registroForm.value).subscribe(

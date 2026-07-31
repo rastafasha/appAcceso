@@ -1,3 +1,65 @@
-<p>
-  resultado works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Resultado de Verificación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding result-container">
+
+  @if (isLoading) {
+    <div class="center-box">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Consultando base de datos Atlas...</p>
+    </div>
+  } @else {
+    
+    <!-- CASO A: ACCESO AUTORIZADO (PANTALLA VERDE) -->
+    @if (resultado?.abrir) {
+      <div class="status-card success-view">
+        <ion-icon name="checkmark-circle-outline" class="big-icon"></ion-icon>
+        <h1>ACCESO CONCEDIDO</h1>
+        <ion-badge color="dark">{{ resultado.infoAcceso?.tipo }}</ion-badge>
+
+        <div class="details-box ion-margin-top">
+          <p><strong>Destino:</strong> Casa {{ resultado.infoAcceso?.casa }}</p>
+          <p><strong>Nombre:</strong> {{ resultado.infoAcceso?.visitante }}</p>
+          <p><strong>Autoriza:</strong> {{ resultado.infoAcceso?.residente }}</p>
+
+          @if (resultado.infoAcceso?.vehiculo?.placa) {
+            <div class="plate-box ion-margin-top">
+              <span>🚗 PLACA A VERIFICAR:</span>
+              <h2>{{ resultado.infoAcceso.vehiculo.placa | uppercase }}</h2>
+              <p>{{ resultado.infoAcceso.vehiculo.marca }} • {{ resultado.infoAcceso.vehiculo.color }}</p>
+            </div>
+          } @else {
+            <div class="plate-box pedestrian">
+              <h2>🚶 ACCESO PEATONAL</h2>
+            </div>
+          }
+        </div>
+
+        <ion-button expand="block" color="light" class="action-btn" (click)="volverAlScanner()">
+          Siguiente Vehículo
+        </ion-button>
+      </div>
+    }
+
+    <!-- CASO B: ACCESO RECHAZADO (PANTALLA ROJA) -->
+    @if (resultado && !resultado?.abrir) {
+      <div class="status-card danger-view">
+        <ion-icon name="close-circle-outline" class="big-icon"></ion-icon>
+        <h1>ACCESO DENEGADO</h1>
+        
+        <div class="error-box ion-margin-top">
+          <p>Motivo del bloqueo:</p>
+          <h3>{{ errorMensaje || resultado.mensaje }}</h3>
+        </div>
+
+        <ion-button expand="block" color="light" class="action-btn" (click)="volverAlScanner()">
+          Reintentar Escaneo
+        </ion-button>
+      </div>
+    }
+  }
+
+</ion-content>

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mi Perfil Residencial</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding profile-background">
+  <div class="profile-wrapper">
+
+    <!-- SECCIÓN 1: DATOS PERSONALES DEL GUARDIA -->
+    <ion-card class="info-card">
+      <ion-card-content>
+        <div class="user-header">
+          <ion-icon name="person-outline" class="main-icon"></ion-icon>
+          <div class="user-details">
+            <h2>{{ datosUsuario.first_name }} {{ datosUsuario.last_name }}</h2>
+            <p><ion-icon name="mail-outline"></ion-icon> {{ datosUsuario.email }}</p>
+            <p><ion-icon name="phone-portrait-outline"></ion-icon> {{ datosUsuario.telefono }}</p>
+            <ion-badge color="success" class="ion-margin-top">Guardia Autorizado</ion-badge>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    
+
+  </div>
+</ion-content>

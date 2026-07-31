@@ -1,3 +1,43 @@
-<p>
-  bitacora works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-button slot="start" fill="clear" color="light" routerLink="/guardia/dashboard">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Bitácora Completa de Hoy</ion-title>
+    <ion-button slot="end" fill="clear" color="light" (click)="cargarBitacoraCompleta()">
+      <ion-icon name="refresh-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding bitacora-bg">
+  
+  <ion-list class="clean-list" *ngIf="historialCompleto.length > 0; else noRegistros">
+    <ion-item lines="none" class="log-card" *ngFor="let log of historialCompleto">
+      
+      <ion-icon 
+        [name]="log.tipo === 'PROPIETARIO' ? 'car-outline' : 'people-outline'" 
+        [color]="log.tipo === 'PROPIETARIO' ? 'primary' : 'secondary'"
+        slot="start">
+      </ion-icon>
+
+      <ion-label>
+        <h2>Casa {{ log.casa }}</h2>
+        <h3>{{ log.visitante }}</h3>
+        <p class="plate-text" *ngIf="log.vehiculo?.placa">🚗 Placa: {{ log.vehiculo.placa | uppercase }}</p>
+        <p class="pedestrian-text" *ngIf="!log.vehiculo?.placa">🚶 Ingreso Peatonal</p>
+      </ion-label>
+
+      <div slot="end" class="time-block">
+        <ion-badge color="dark">{{ log.tipo }}</ion-badge>
+        <span>{{ log.fechaUso | date:'HH:mm:ss' }}</span>
+      </div>
+
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noRegistros>
+    <p class="ion-text-center ion-padding">No se registran movimientos para el día de hoy.</p>
+  </ng-template>
+
+</ion-content>

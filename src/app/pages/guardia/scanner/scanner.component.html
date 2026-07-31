@@ -1,3 +1,126 @@
-<p>
-  scanner works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Validación de Accesos</ion-title>
+    <ion-button slot="end" fill="clear" color="light" (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding scanner-background">
+  <div class="scanner-wrapper">
+
+    <!-- ESTADO 1: CÁMARA ACTIVA ESPERANDO ESCANEO -->
+    @if (scannerEnabled) {
+      <div class="camera-section">
+        <div class="scan-frame">
+          <zxing-scanner
+            [autofocusEnabled]="true"
+            [enable]="scannerEnabled"
+            (camerasFound)="onCamerasFound($event)"
+            (permissionResponse)="onHasPermission($event)"
+            (scanSuccess)="onCodeResult($event)">
+          </zxing-scanner>
+          <div class="laser-line"></div>
+        </div>
+        <p class="instruction-text">Apunta la cámara del dispositivo al código QR del visitante</p>
+      </div>
+    }
+
+    <!-- ESTADO 2: PROCESANDO PETICIÓN CON MONGODB ATLAS -->
+    @if (isLoading) {
+      <div class="loading-box ion-text-center ion-padding">
+        <ion-spinner name="crescent" color="light"></ion-spinner>
+        <p>Verificando credenciales en tiempo real...</p>
+      </div>
+    }
+
+    <!-- ESTADO 3: CASO ÉXITO - ACCESO CONCEDIDO (PANTALLA VERDE GIGANTE) -->
+    @if (resultadoVerificacion?.abrir) {
+      <div class="result-screen success-screen animate-fade-in">
+        <div class="icon-header">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </div>
+        
+        <div class="result-body ion-padding">
+          <ion-badge color="dark" class="role-badge">
+            {{ resultadoVerificacion.infoAcceso?.tipo }}
+          </ion-badge>
+          
+          <h1 class="main-title">ACCESO CONCEDIDO</h1>
+          <p class="subtitle">¡Abriendo puerta eléctrica!</p>
+
+          <ion-list lines="none" class="data-list">
+            <ion-item>
+              <ion-label>
+                <span>Destino / Vivienda</span>
+                <h3>Casa {{ resultadoVerificacion.infoAcceso?.casa }}</h3>
+              </ion-label>
+            </ion-item>
+            
+            <ion-item>
+              <ion-label>
+                <span>Persona que ingresa</span>
+                <h3>{{ resultadoVerificacion.infoAcceso?.visitante }}</h3>
+              </ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>
+                <span>Residente que autoriza</span>
+                <h3>{{ resultadoVerificacion.infoAcceso?.residente }}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+
+          <!-- Verificación de placas físicas contra la Base de Datos -->
+          @if (resultadoVerificacion.infoAcceso?.vehiculo?.placa) {
+            <div class="plate-verification-card">
+              <span class="plate-title">🚗 VERIFICAR PLACA FÍSICA:</span>
+              <h2 class="plate-number">{{ resultadoVerificacion.infoAcceso.vehiculo.placa | uppercase }}</h2>
+              <p class="plate-details">
+                {{ resultadoVerificacion.infoAcceso.vehiculo.marca }} 
+                {{ resultadoVerificacion.infoAcceso.vehiculo.modelo }} • 
+                {{ resultadoVerificacion.infoAcceso.vehiculo.color }}
+              </p>
+            </div>
+          } @else {
+            <div class="plate-verification-card pedestrian-card">
+              <h2>🚶 INGRESO PEATONAL</h2>
+            </div>
+          }
+
+          <ion-button expand="block" color="light" class="action-reset-btn" (click)="reiniciarEscaner()">
+            Listo - Siguiente Vehículo
+          </ion-button>
+        </div>
+      </div>
+    }
+
+    <!-- ESTADO 4: CASO FALLO - ACCESO RECHAZADO (PANTALLA ROJA GIGANTE) -->
+    @if (resultadoVerificacion && !resultadoVerificacion?.abrir) {
+      <div class="result-screen danger-screen animate-fade-in">
+        <div class="icon-header">
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </div>
+
+        <div class="result-body ion-padding">
+          <h1 class="main-title">ACCESO RECHAZADO</h1>
+          <p class="subtitle">Mantener portón cerrado</p>
+
+          <div class="error-reason-box">
+            <p><strong>Motivo del rechazo:</strong></p>
+            <h3>{{ errorMensaje || resultadoVerificacion.mensaje }}</h3>
+          </div>
+
+          <p class="security-alert-text">Por motivos de seguridad, este pase no cuenta con autorización activa en el sistema.</p>
+
+          <ion-button expand="block" color="light" class="action-reset-btn" (click)="reiniciarEscaner()">
+            Reintentar Escaneo
+          </ion-button>
+        </div>
+      </div>
+    }
+
+  </div>
+</ion-content>

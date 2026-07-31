@@ -31,29 +31,32 @@ export const routes: Routes = [
     path: 'guardia',
     canActivate: [authGuard, rolGuard], // Primero valida login, luego el rol
     data: { roles: ['GUARDIA'] }, 
-    children: [
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        loadComponent: () => import('./pages/guardia/dashboard/dashboard.component').then(m => m.DashboardComponent)
-      },
-      {
-        path: 'scanner',
-        loadComponent: () => import('./pages/guardia/scanner/scanner.component').then(m => m.ScannerComponent)
-      },
-      {
-        path: 'bitacora',
-        loadComponent: () => import('./pages/guardia/bitacora/bitacora.component').then(m => m.BitacoraComponent)
-      },
-      {
-        path: 'resultado',
-        loadComponent: () => import('./pages/guardia/resultado/resultado.component').then(m => m.ResultadoComponent)
-      }
-    ]
+    loadChildren: () => import('./pages/guardia/gtabs/guardia-tabs.routes').then(m => m.GUARDIA_TABS_ROUTES)
+
+    //esto se aplica si no lleva tabs o son hijos
+    // children: [
+    //   {
+    //     path: '',
+    //     redirectTo: 'dashboard',
+    //     pathMatch: 'full'
+    //   },
+    //   {
+    //     path: 'dashboard',
+    //     loadComponent: () => import('./pages/guardia/dashboard/dashboard.component').then(m => m.DashboardComponent)
+    //   },
+    //   {
+    //     path: 'scanner',
+    //     loadComponent: () => import('./pages/guardia/scanner/scanner.component').then(m => m.ScannerComponent)
+    //   },
+    //   {
+    //     path: 'bitacora',
+    //     loadComponent: () => import('./pages/guardia/bitacora/bitacora.component').then(m => m.BitacoraComponent)
+    //   },
+    //   {
+    //     path: 'resultado',
+    //     loadComponent: () => import('./pages/guardia/resultado/resultado.component').then(m => m.ResultadoComponent)
+    //   }
+    // ]
   },
   
   // Ruta comodín para manejar errores 404

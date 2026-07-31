@@ -1,0 +1,181 @@
+.scanner-background {
+  --background: #11141a;
+}
+
+.scanner-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+// Estilos de la sección de la cámara
+.camera-section {
+  text-align: center;
+  margin-top: 30px;
+
+  .scan-frame {
+    width: 100%;
+    max-width: 290px;
+    height: 290px;
+    margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    border: 4px solid var(--ion-color-primary);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+    zxing-scanner {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .laser-line {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: #ff4d4d;
+    box-shadow: 0 0 8px #ff4d4d;
+    top: 0;
+    animation: scanAnimation 2s linear infinite;
+  }
+
+  .instruction-text {
+    color: #a4b0be;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    padding: 0 15px;
+  }
+}
+
+@keyframes scanAnimation {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+.loading-box {
+  color: #ffffff;
+  margin-top: 60px;
+  p { margin-top: 12px; font-weight: 500; }
+}
+
+// Contenedor global de resultados fullscreen
+.result-screen {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  margin-top: 10px;
+  color: #ffffff;
+
+  .icon-header {
+    padding: 24px 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.12);
+    
+    ion-icon { font-size: 5.5rem; }
+  }
+
+  .result-body {
+    text-align: center;
+
+    .role-badge {
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .main-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin: 14px 0 2px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      font-weight: 600;
+      opacity: 0.9;
+      margin: 0 0 24px 0;
+    }
+  }
+}
+
+// PANTALLA EXITOSA (VERDE)
+.success-screen {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+
+  .data-list {
+    background: transparent;
+    padding: 0;
+    text-align: left;
+
+    ion-item {
+      --background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      margin-bottom: 6px;
+      color: #ffffff;
+
+      span { font-size: 0.72rem; color: rgba(255, 255, 255, 0.75); font-weight: 600; text-transform: uppercase; }
+      h3 { font-size: 1.05rem; font-weight: 700; color: #ffffff; margin: 2px 0 0 0; }
+    }
+  }
+
+  // Cuadro de validación de placas
+  .plate-verification-card {
+    background: #ffffff;
+    color: #2c3e50;
+    padding: 14px;
+    border-radius: 12px;
+    margin-top: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    .plate-title { font-size: 0.75rem; color: #27ae60; font-weight: 800; display: block; }
+    .plate-number { font-size: 2.1rem; font-weight: 900; margin: 4px 0; letter-spacing: 1px; color: #1e3c72; }
+    .plate-details { font-size: 0.85rem; color: #7f8c8d; font-weight: 600; margin: 0; }
+  }
+  
+  .pedestrian-card h2 { font-size: 1.25rem; font-weight: 800; color: #27ae60; margin: 4px 0; }
+}
+
+// PANTALLA RECHAZADA (ROJA)
+.danger-screen {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+
+  .error-reason-box {
+    background: rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: left;
+    border-left: 5px solid #ffffff;
+
+    p { font-size: 0.75rem; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); margin: 0; font-weight: 600; }
+    h3 { font-size: 1.2rem; font-weight: 700; color: #ffffff; margin: 4px 0 0 0; }
+  }
+
+  .security-alert-text {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    line-height: 1.4;
+    margin: 24px 0;
+  }
+}
+
+.action-reset-btn {
+  --border-radius: 10px;
+  font-weight: 700;
+  height: 48px;
+  margin-top: 20px;
+  color: #2c3e50 !important;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
