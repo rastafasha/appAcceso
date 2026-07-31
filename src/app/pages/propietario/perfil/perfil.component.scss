@@ -1,0 +1,183 @@
+.profile-background {
+  --background: #f4f6f9;
+}
+
+.profile-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.info-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  margin-bottom: 15px;
+}
+
+.user-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  .main-icon {
+    font-size: 2.8rem;
+    color: var(--ion-color-primary);
+    background: #e8f0fe;
+    padding: 12px;
+    border-radius: 50%;
+  }
+
+  .user-details {
+    h2 {
+      margin: 0 0 6px 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 0.86rem;
+      color: #7f8c8d;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      ion-icon {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.block-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #576574;
+  margin: 25px 0 10px 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+  ion-icon {
+    color: var(--ion-color-primary);
+  }
+}
+
+.property-grid {
+  display: flex;
+  justify-content: space-between;
+
+  .data-item {
+    display: flex;
+    flex-direction: column;
+
+    .label {
+      font-size: 0.72rem;
+      color: #404040 !important;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2c3e50 !important;
+      margin-top: 2px;
+    }
+  }
+}
+
+.custom-list {
+  background: transparent;
+  padding: 0;
+
+  .car-item {
+    --background: #ffffff;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+
+    h3 {
+      font-size: 0.95rem;
+      color: #34495e;
+    }
+    p {
+      font-size: 0.82rem;
+      color: #333333;
+    }
+  }
+}
+
+.swipe-hint {
+  font-size: 0.75rem;
+  color: #bdc3c7;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.form-title {
+  margin: 0 0 14px 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #34495e;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+
+  .input-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.add-btn {
+  --border-radius: 8px;
+  font-weight: 600;
+  height: 46px;
+}
+
+.empty-text, .status-text {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  padding: 10px 4px;
+}
+.mini-input {
+  --background: transparent;
+  --background-focused: transparent;
+  --border-style: none;
+  --padding-start: 0px;
+  width: 100%;
+
+  ion-label {
+    font-size: 0.75rem !important;
+    font-weight: 600;
+    color: var(--ion-color-step-600, #7f8c8d);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  ion-input {
+    background: var(--ion-color-step-100, #f4f5f8); 
+    border-radius: 10px;
+    padding: 10px 14px !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    min-height: 44px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    // 🌟 FORZAR EL COLOR DEL TEXTO ESCRITO A GRIS OSCURO
+    // Esto sobreescribe el blanco automático del modo oscuro de Ionic
+    color: #2c3e50 !important;   // Color para el texto estándar de CSS
+    --color: #2c3e50 !important; // Propiedad interna de Ionic para el input nativo
+
+    // Estilo para el texto que aún no se ha escrito (placeholder)
+    --placeholder-color: #95a5a6; 
+  }
+}

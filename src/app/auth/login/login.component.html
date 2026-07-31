@@ -1,0 +1,66 @@
+<ion-content class="ion-padding ion-text-center login-container">
+  
+  <div class="login-wrapper">
+    <!-- Encabezado / Logo Conceptual -->
+    <div class="logo-section">
+      <div class="logo-icon">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </div>
+      <h1>Acceso Residencial</h1>
+      <p>Control inteligente de visitas y propietarios</p>
+    </div>
+
+    <!-- Tarjeta del Formulario -->
+    <ion-card class="ion-no-margin ion-padding">
+      <!-- Vinculación del FormGroup -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        
+        <!-- Campo Correo -->
+        <ion-item lines="none" class="custom-input" [class.input-error]="emailInvalid">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input 
+            type="email" 
+            placeholder="Correo electrónico" 
+            formControlName="email">
+          </ion-input>
+        </ion-item>
+        <!-- Mensaje de error reactivo -->
+        <div *ngIf="emailInvalid" class="error-message">
+          <ion-text color="danger">Ingresa un correo electrónico válido</ion-text>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <ion-item lines="none" class="custom-input ion-margin-top" [class.input-error]="passwordInvalid">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input 
+            type="password" 
+            placeholder="Contraseña" 
+            formControlName="password">
+          </ion-input>
+        </ion-item>
+        <!-- Mensaje de error reactivo -->
+        <div *ngIf="passwordInvalid" class="error-message">
+          <ion-text color="danger">La contraseña requiere mínimo 6 caracteres</ion-text>
+        </div>
+
+        <!-- Botón de Ingreso (Deshabilitado si hay errores de formato) -->
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          class="ion-margin-top submit-btn" 
+          color="primary"
+          [disabled]="loginForm.invalid">
+          Iniciar Sesión
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+
+      </form>
+    </ion-card>
+
+    <p class="footer-text">
+      ¿Eres un nuevo residente? 
+      <a routerLink="/registro">Regístrate aquí</a>
+    </p>
+  </div>
+
+</ion-content>

@@ -1,0 +1,86 @@
+<ion-content class="ion-padding ion-text-center register-container">
+  
+  <div class="register-wrapper">
+    <!-- Encabezado -->
+    <div class="header-section">
+      <h1>Crear Cuenta</h1>
+      <p>Regístrate para gestionar tus accesos residenciales</p>
+    </div>
+
+    <!-- Tarjeta del Formulario -->
+    <ion-card class="ion-no-margin ion-padding">
+      <form [formGroup]="registroForm" (ngSubmit)="onRegistro()">
+        
+        <!-- Nombre y Apellido lado a lado -->
+        <div class="name-row">
+          <div class="input-col">
+            <ion-item lines="none" class="custom-input" [class.input-error]="isInvalid('first_name')">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-input type="text" placeholder="Nombre" formControlName="first_name"></ion-input>
+            </ion-item>
+          </div>
+          <div class="input-col">
+            <ion-item lines="none" class="custom-input" [class.input-error]="isInvalid('last_name')">
+              <ion-input type="text" placeholder="Apellido" formControlName="last_name"></ion-input>
+            </ion-item>
+          </div>
+        </div>
+
+        <!-- Campo Correo -->
+        <ion-item lines="none" class="custom-input ion-margin-top" [class.input-error]="isInvalid('correo')">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input type="email" placeholder="Correo electrónico" formControlName="email"></ion-input>
+        </ion-item>
+        <div *ngIf="isInvalid('email')" class="error-message">
+          <ion-text color="danger">Ingresa un correo electrónico válido</ion-text>
+        </div>
+
+        <!-- Campo Teléfono -->
+        <ion-item lines="none" class="custom-input ion-margin-top" [class.input-error]="isInvalid('telefono')">
+          <ion-icon name="phone-portrait-outline" slot="start"></ion-icon>
+          <ion-input type="tel" placeholder="Teléfono celular" formControlName="telefono"></ion-input>
+        </ion-item>
+        <div *ngIf="isInvalid('telefono')" class="error-message">
+          <ion-text color="danger">Ingresa un número telefónico válido</ion-text>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <ion-item lines="none" class="custom-input ion-margin-top" [class.input-error]="isInvalid('password')">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Contraseña (Mín. 6 caracteres)" formControlName="password"></ion-input>
+        </ion-item>
+        <div *ngIf="isInvalid('password')" class="error-message">
+          <ion-text color="danger">La contraseña es demasiado corta</ion-text>
+        </div>
+
+        <!-- Confirmar Contraseña -->
+        <ion-item lines="none" class="custom-input ion-margin-top" [class.input-error]="isInvalid('confirmPassword') || passwordsDoNotMatch">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Confirmar contraseña" formControlName="confirmPassword"></ion-input>
+        </ion-item>
+        <div *ngIf="passwordsDoNotMatch" class="error-message">
+          <ion-text color="danger">Las contraseñas no coinciden</ion-text>
+        </div>
+
+        <!-- Botón de Envío -->
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          class="ion-margin-top submit-btn" 
+          color="primary"
+          [disabled]="registroForm.invalid">
+          Registrarme
+          <ion-icon name="checkmark-circle-outline" slot="end"></ion-icon>
+        </ion-button>
+
+      </form>
+    </ion-card>
+
+    <!-- Enlace de regreso al Login -->
+    <p class="footer-text">
+      ¿Ya tienes una cuenta? 
+      <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </div>
+
+</ion-content>

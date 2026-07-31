@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-button slot="start" fill="clear" color="light" routerLink="/propietario/visitas">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Nuevo Pase Temporal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding generic-container">
+  <div class="form-wrapper">
+
+    <form [formGroup]="visitaForm" (ngSubmit)="crearPaseVisita()">
+
+      <!-- SECCIÓN 1: DATOS DEL INVITADO -->
+      <h3 class="section-title"><ion-icon name="person-outline"></ion-icon> Datos del Invitado</h3>
+      <ion-card class="ion-no-margin ion-padding ion-margin-bottom">
+        <ion-item lines="none" class="custom-input" [class.input-error]="isInvalid('nombreVisita')">
+          <ion-input type="text" placeholder="Nombre completo del visitante" formControlName="nombreVisita"></ion-input>
+        </ion-item>
+        <div *ngIf="isInvalid('nombreVisita')" class="error-message">
+          <ion-text color="danger">El nombre es obligatorio</ion-text>
+        </div>
+      </ion-card>
+
+      <!-- SECCIÓN 2: VIGENCIA DEL QR -->
+      <h3 class="section-title"><ion-icon name="calendar-outline"></ion-icon> Horario de Acceso</h3>
+      <ion-card class="ion-no-margin ion-padding ion-margin-bottom dateTime-card">
+        <div class="datetime-row">
+          <ion-label>Válido Desde:</ion-label>
+          <ion-datetime-button datetime="desde"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="desde" formControlName="validoDesde" presentation="date-time"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </div>
+
+        <div class="datetime-row ion-margin-top">
+          <ion-label>Válido Hasta:</ion-label>
+          <ion-datetime-button datetime="hasta"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="hasta" formControlName="validoHasta" presentation="date-time"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </div>
+      </ion-card>
+
+      <!-- SECCIÓN 3: VEHÍCULO (OPCIONAL) -->
+      <h3 class="section-title"><ion-icon name="car-outline"></ion-icon> Datos del Vehículo (Opcional)</h3>
+      <ion-card class="ion-no-margin ion-padding ion-margin-bottom">
+        <ion-item lines="none" class="custom-input">
+          <ion-input type="text" placeholder="Placa / Matrícula" formControlName="placa"></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input ion-margin-top">
+          <ion-input type="text" placeholder="Marca y Modelo" formControlName="modelo"></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="custom-input ion-margin-top">
+          <ion-input type="text" placeholder="Color del vehículo" formControlName="color"></ion-input>
+        </ion-item>
+      </ion-card>
+
+      <!-- BOTÓN DE ENVÍO -->
+      <ion-button expand="block" type="submit" class="submit-btn" color="secondary"
+        [disabled]="visitaForm.invalid || isLoading">
+        {{ isLoading ? 'Generando código...' : 'Generar Código QR' }}
+        <ion-icon name="checkmark-circle-outline" slot="end"></ion-icon>
+      </ion-button>
+
+    </form>
+  </div>
+</ion-content>

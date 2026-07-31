@@ -1,0 +1,120 @@
+.visitas-background {
+  --background: #f4f6f9;
+}
+
+.visitas-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.custom-list {
+  background: transparent;
+  padding: 0;
+}
+
+.visita-item {
+  --background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  --padding-start: 12px;
+
+  h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 4px 0;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin: 2px 0;
+  }
+
+  .date-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+  }
+}
+
+.action-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+
+  ion-badge {
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  
+  ion-button {
+    --padding-end: 0;
+    margin: 0;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 80px;
+  padding: 20px;
+
+  ion-icon {
+    font-size: 4.5rem;
+    color: #bdc3c7;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #34495e;
+    margin: 16px 0 8px 0;
+  }
+
+  p {
+    font-size: 0.92rem;
+    color: #7f8c8d;
+    line-height: 1.4;
+  }
+}
+
+// Estilo del Popup del QR
+.modal-content {
+  --background: #ffffff;
+  
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-top: 15px;
+  }
+
+  .modal-hint {
+    font-size: 0.88rem;
+    color: #7f8c8d;
+    max-width: 280px;
+    margin: 6px auto 0 auto;
+  }
+
+  .qr-box {
+    display: inline-block;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .share-btn {
+    --border-radius: 10px;
+    font-weight: 600;
+    height: 48px;
+    margin-top: 30px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

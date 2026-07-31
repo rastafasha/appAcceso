@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Mi Acceso</ion-title>
+    <ion-button slot="end" fill="clear" color="light" (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center dashboard-container">
+
+  <!-- Sección de Perfil del Residente -->
+  <div class="welcome-section ion-margin-bottom">
+    <ion-avatar class="avatar-center">
+      <img src="assets/images/default.png" alt="Avatar" />
+    </ion-avatar>
+    <h2>¡Hola, {{ nombrePropietario }}!</h2>
+    <p>Residente Autorizado</p>
+  </div>
+
+  <!-- Tarjeta Contenedora del Código QR Permanente -->
+  <ion-card class="qr-card ion-padding">
+    <ion-card-content>
+      <p class="qr-instruction">Presenta este código frente al lector de la entrada para abrir la puerta</p>
+
+      <!-- Componente del Código QR -->
+      <div class="qr-wrapper" *ngIf="qrValue">
+        <qrcode [qrdata]="qrValue" [width]="220" [errorCorrectionLevel]="'H'" [colorDark]="'#1e3c72'"
+          [colorLight]="'#ffffff'" [elementType]="'canvas'">
+        </qrcode>
+      </div>
+
+      <div class="status-badge ion-margin-top">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <ion-label>Pase Permanente Activo</ion-label>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botones de Acciones Rápidas -->
+  <div class="actions-grid ion-margin-top">
+    <ion-button expand="block" color="secondary" routerLink="/propietario/generar-visita" class="action-btn">
+      <ion-icon name="person-add-outline" slot="start"></ion-icon>
+      Crear Pase de Visita
+    </ion-button>
+
+    <ion-button expand="block" fill="outline" color="primary" routerLink="/propietario/perfil"
+      class="action-btn ion-margin-top">
+      <ion-icon name="car-outline" slot="start"></ion-icon>
+      Mis Vehículos Fijos
+    </ion-button>
+  </div>
+
+</ion-content>

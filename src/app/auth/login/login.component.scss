@@ -1,0 +1,17 @@
+// Estilo de alerta para campos inválidos
+.input-error {
+  --background: #fff0f0 !important;
+  border: 1px solid #ff4d4d;
+}
+
+// Contenedor del texto de error inferior
+.error-message {
+  text-align: left;
+  padding-left: 12px;
+  margin-top: 4px;
+  
+  ion-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+}

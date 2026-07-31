@@ -1,0 +1,101 @@
+.register-container {
+  --background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-wrapper {
+  max-width: 440px;
+  margin: 30px auto;
+  width: 100%;
+}
+
+.header-section {
+  color: #ffffff;
+  margin-bottom: 25px;
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin: 5px 0 0 0;
+  }
+}
+
+ion-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+// Estructura flex para colocar nombre y apellido juntos
+.name-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+
+  .input-col {
+    flex: 1;
+  }
+}
+
+.custom-input {
+  --background: #f4f5f8;
+  --border-radius: 10px;
+  --padding-start: 12px;
+
+  ion-icon {
+    color: #666;
+    font-size: 1.2rem;
+  }
+
+  ion-input {
+    font-size: 0.9rem;
+  }
+}
+
+.submit-btn {
+  --border-radius: 10px;
+  font-weight: 600;
+  height: 48px;
+  margin-top: 24px;
+}
+
+.footer-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  margin-top: 20px;
+
+  a {
+    color: #00e676;
+    text-decoration: none;
+    font-weight: 600;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Estilos de validación reactiva
+.input-error {
+  --background: #fff0f0 !important;
+  border: 1px solid #ff4d4d;
+}
+
+.error-message {
+  text-align: left;
+  padding-left: 12px;
+  margin-top: 4px;
+  
+  ion-text {
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+}
