@@ -55,6 +55,7 @@ export class GenerarVisitaComponent implements OnInit {
 
     this.visitaForm = this.fb.group({
       nombreVisita: ['', [Validators.required, Validators.minLength(3)]],
+      idVisita: ['', [Validators.required, Validators.minLength(3)]],
       // Inicializamos ambos campos con strings en formato ISO válidos
       validoDesde: [ahora.toISOString(), Validators.required],
       validoHasta: [tresHorasDespues.toISOString(), Validators.required],
@@ -98,6 +99,7 @@ export class GenerarVisitaComponent implements OnInit {
       propietarioId: this.user.uid,
       propiedadId: this.propiedad._id, // Reemplaza dinámicamente con la propiedad real del dueño
       nombreVisita: formValues.nombreVisita,
+      idVisita: formValues.idVisita,
       validoDesde: formValues.validoDesde,
       validoHasta: formValues.validoHasta,
       // Mapeamos el carro

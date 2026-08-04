@@ -43,4 +43,9 @@ export class AccesscodeService {
     const url = `${baseUrl}/access/bitacora-hoy`;
     return this.http.get<any>(url, this.headers)
   }
+
+   deleteCode(_id: string) {
+    const url = `${baseUrl}/access/borrarv/${_id}`;
+    return this.http.delete(url, this.headers);
+  }
 }

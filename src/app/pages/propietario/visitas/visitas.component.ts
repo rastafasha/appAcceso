@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { 
-  IonContent, IonHeader, IonToolbar, IonTitle,
-  IonList, IonItem, IonLabel, IonButton, IonIcon, IonBadge, IonModal 
-} from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonButton, IonIcon, IonBadge, IonModal, IonItemOptions, IonItemOption, IonItemSliding } from '@ionic/angular/standalone';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { Share } from '@capacitor/share'; // 🌟 Plugin nativo para compartir [1]
 import { addIcons } from 'ionicons';
@@ -20,8 +17,11 @@ import { AccesscodeService } from '../../../services/accesscode.service';
   imports: [
     CommonModule, RouterModule, QRCodeComponent,
     IonContent, IonHeader, IonToolbar, IonTitle,
-    IonList, IonItem, IonLabel, IonButton, IonIcon, IonBadge, IonModal
-  ]
+    IonList, IonItem, IonLabel, IonButton, IonIcon, IonBadge, IonModal,
+    IonItemOptions,
+    IonItemOption,
+    IonItemSliding
+]
 })
 export class VisitasComponent implements OnInit {
   propietarioId = '';
@@ -31,6 +31,7 @@ export class VisitasComponent implements OnInit {
   isModalOpen = false;
   tokenSeleccionado = '';
   nombreVisitaSeleccionada = '';
+  visitaSeleccionada : any; // Variable para almacenar la visita seleccionada
 
   constructor(
     private http: HttpClient, 
@@ -68,10 +69,30 @@ export class VisitasComponent implements OnInit {
       });
   }
 
-  abrirVisorQR(token: string, nombreVisita: string) {
+  abrirVisorQR(token: string, nombreVisita: string, visita?: any) {
     this.tokenSeleccionado = token;
     this.nombreVisitaSeleccionada = nombreVisita;
+    this.visitaSeleccionada = visita; // Guardamos la visita seleccionada
+    console.log(visita)
     this.isModalOpen = true;
+  }
+
+  eliminarCodigo(visitaSeleccionada: string) {
+    if (!this.visitaSeleccionada) return;
+
+    // Llamamos al método DELETE especializado pasándole el ID de la casa y el _id del carro
+
+    this.accesscodeService.deleteCode(this.visitaSeleccionada._id).subscribe({
+      next: (resp: any) => {
+        if (resp.ok) {
+          // Filtramos localmente el carro eliminado para removerlo de la vista sin recargar la página
+          // this.propiedad.vehiculosPropietario = this.propiedad.vehiculosPropietario.filter(
+          //   (v: any) => v._id !== vehiculoId
+          // );
+        }
+      },
+      error: (err) => console.error('Error al remover el vehículo:', err)
+    });
   }
 
   cerrarVisorQR() {
@@ -104,5 +125,7 @@ async compartirPorWhatsApp() {
     window.open(urlWhatsApp, '_blank');
   }
 }
+
+
 
 }

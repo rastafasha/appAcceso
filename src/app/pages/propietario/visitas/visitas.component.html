@@ -29,9 +29,12 @@
           <ion-badge color="warning" *ngIf="!visita.usado">Activo</ion-badge>
           <ion-badge color="success" *ngIf="visita.usado">Utilizado</ion-badge>
           
-          <ion-button fill="clear" size="small" (click)="abrirVisorQR(visita.token, visita.nombreVisita)">
+          <ion-button fill="clear" size="small" (click)="abrirVisorQR(visita.token, visita.nombreVisita, visita)">
             <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
           </ion-button>
+          <!-- <ion-button color="danger" size="small" (click)="eliminarCodigo( visita._id)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-button> -->
         </div>
 
       </ion-item>
@@ -74,6 +77,22 @@
               [elementType]="'canvas'">
             </qrcode>
           </div>
+          <!-- datos -->
+           <ion-item lines="none" class="visita-item" *ngIf="visitaSeleccionada">
+            
+            <ion-label>
+              <h2> Desde: {{ visitaSeleccionada.validoDesde | date:'dd/MM/yyyy HH:mm' }}</h2>
+              <h2> Hasta: {{ visitaSeleccionada.validoHasta | date:'dd/MM/yyyy HH:mm' }}</h2>
+            </ion-label>
+
+            <!-- Banderas dinámicas basadas en tu modelo de Mongoose -->
+            <div slot="end" class="action-block">
+              <ion-badge color="warning" *ngIf="!visitaSeleccionada.usado">Activo</ion-badge>
+              <ion-badge color="success" *ngIf="visitaSeleccionada.usado">Utilizado</ion-badge>
+              
+            </div>
+
+      </ion-item>
 
           <ion-button expand="block" color="success" class="share-btn ion-margin-top" (click)="compartirPorWhatsApp()">
             <ion-icon name="share-social-outline" slot="start"></ion-icon>

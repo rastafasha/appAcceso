@@ -19,10 +19,6 @@ export const TABS_ROUTES: Routes = [
         loadComponent: () => import('../perfil/perfil.component').then(m => m.PerfilComponent)
       },
       {
-        path: 'compartir-qr',
-        loadComponent: () => import('../compartir-qr/compartir-qr.component').then(m => m.CompartirQrComponent)
-      },
-      {
         path: 'generar-visita',
         loadComponent: () => import('../generar-visita/generar-visita.component').then(m => m.GenerarVisitaComponent)
       },

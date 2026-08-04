@@ -22,6 +22,14 @@
           <ion-text color="danger">El nombre es obligatorio</ion-text>
         </div>
       </ion-card>
+      <ion-card class="ion-no-margin ion-padding ion-margin-bottom">
+        <ion-item lines="none" class="custom-input" [class.input-error]="isInvalid('idVisita')">
+          <ion-input type="text" placeholder="ID de la visita" formControlName="idVisita"></ion-input>
+        </ion-item>
+        <div *ngIf="isInvalid('idVisita')" class="error-message">
+          <ion-text color="danger">El ID de la visita es obligatorio</ion-text>
+        </div>
+      </ion-card>
 
       <!-- SECCIÓN 2: VIGENCIA DEL QR -->
       <h3 class="section-title"><ion-icon name="calendar-outline"></ion-icon> Horario de Acceso</h3>
