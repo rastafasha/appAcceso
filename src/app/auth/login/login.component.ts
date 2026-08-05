@@ -8,6 +8,7 @@ import {
 import { addIcons } from 'ionicons';
 import { qrCodeOutline, mailOutline, lockClosedOutline, arrowForwardOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth.service';
+import { PwaNotifInstallerComponent } from "../../shared/pwa-notif-installer/pwa-notif-installer.component";
 
 @Component({
   selector: 'app-login',
@@ -24,8 +25,9 @@ import { AuthService } from '../../services/auth.service';
     IonIcon,
     IonInput,
     IonButton,
-    IonText
-  ]
+    IonText,
+    PwaNotifInstallerComponent
+]
 })
 export class LoginComponent implements OnInit {
   // Definimos el objeto FormGroup
