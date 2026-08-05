@@ -26,26 +26,26 @@ export class AccesscodeService {
   }
 
   generarVisita(accesocode: any) {
-    const url = `${baseUrl}/access/generar-visita`;
+    const url = `${baseUrl}/accessqr/generar-visita`;
     return this.http.post(url, accesocode, this.headers);
   }
 
   verificarPuerta(accesocode: any) {
-    const url = `${baseUrl}/access/verificar-puerta`;
+    const url = `${baseUrl}/accessqr/verificar-puerta`;
     return this.http.post(url, accesocode, this.headers);
   }
 
    getVisitasUser(propietarioId: string) {
-    const url = `${baseUrl}/access/visitas_propietario/${propietarioId}`;
+    const url = `${baseUrl}/accessqr/visitas_propietario/${propietarioId}`;
     return this.http.get<any>(url, this.headers)
   }
    getBitacoraHoy() {
-    const url = `${baseUrl}/access/bitacora-hoy`;
+    const url = `${baseUrl}/accessqr/bitacora-hoy`;
     return this.http.get<any>(url, this.headers)
   }
 
    deleteCode(_id: string) {
-    const url = `${baseUrl}/access/borrarv/${_id}`;
+    const url = `${baseUrl}/accessqr/borrarv/${_id}`;
     return this.http.delete(url, this.headers);
   }
 }
