@@ -79,6 +79,7 @@ export class ScannerComponent implements OnInit {
         // resp.abrir contendrá true o false según lo que defina MongoDB Atlas
         this.resultadoVerificacion = resp;
         // 🚀 NAVEGAMOS A LA PÁGINA INDEPENDIENTE DE RESULTADO PASANDO EL TOKEN
+        
         this.router.navigate(['/guardia/resultado'], { queryParams: { token: resultString } });
       },
       error: (err) => {

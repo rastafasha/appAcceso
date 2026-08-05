@@ -15,34 +15,47 @@
     
     <!-- CASO A: ACCESO AUTORIZADO (PANTALLA VERDE) -->
     @if (resultado?.abrir) {
-      <div class="status-card success-view">
-        <ion-icon name="checkmark-circle-outline" class="big-icon"></ion-icon>
-        <h1>ACCESO CONCEDIDO</h1>
-        <ion-badge color="dark">{{ resultado.infoAcceso?.tipo }}</ion-badge>
+  <div class="status-card success-view">
+    <ion-icon name="checkmark-circle-outline" class="big-icon"></ion-icon>
+    <h1>ACCESO CONCEDIDO</h1>
+    <ion-badge color="dark">{{ resultado.infoAcceso?.tipo }}</ion-badge>
 
-        <div class="details-box ion-margin-top">
-          <p><strong>Destino:</strong> Casa {{ resultado.infoAcceso?.casa }}</p>
-          <p><strong>Nombre:</strong> {{ resultado.infoAcceso?.visitante }}</p>
-          <p><strong>Autoriza:</strong> {{ resultado.infoAcceso?.residente }}</p>
+    <div class="details-box ion-margin-top">
+      <p><strong>Destino:</strong> Casa {{ resultado.infoAcceso?.casa }}</p>
+      <p><strong>Nombre:</strong> {{ resultado.infoAcceso?.visitante }}</p>
+      <p><strong>Autoriza:</strong> {{ resultado.infoAcceso?.residente }}</p>
 
+      <!-- 🚗 EVALUACIÓN INTEGRADA SEGÚN EL TIPO DE ACCESO DEL BACKEND -->
+      @if (resultado.infoAcceso?.tipoAcceso === 'VEHICULAR') {
+        <div class="plate-box ion-margin-top">
+          <span>🚗 VEHÍCULO A VERIFICAR:</span>
+          
+          <!-- Si es un objeto (Visita con placa) -->
           @if (resultado.infoAcceso?.vehiculo?.placa) {
-            <div class="plate-box ion-margin-top">
-              <span>🚗 PLACA A VERIFICAR:</span>
-              <h2>{{ resultado.infoAcceso.vehiculo.placa | uppercase }}</h2>
-              <p>{{ resultado.infoAcceso.vehiculo.marca }} • {{ resultado.infoAcceso.vehiculo.color }}</p>
-            </div>
-          } @else {
-            <div class="plate-box pedestrian">
-              <h2>🚶 ACCESO PEATONAL</h2>
-            </div>
+            <h2>{{ resultado.infoAcceso.vehiculo.placa | uppercase }}</h2>
+            <p>{{ resultado.infoAcceso.vehiculo.marca }} • {{ resultado.infoAcceso.vehiculo.color }}</p>
+          } 
+          <!-- Si es texto plano (Propietario con código/placa JKLM) -->
+          @else {
+            <h2>{{ resultado.infoAcceso?.vehiculo }}</h2>
           }
         </div>
+      } 
+      <!-- 🚶 CASO CONTRARIO: SI ES PEATONAL -->
+      @else {
+        <div class="plate-box pedestrian">
+          <h2>🚶 ACCESO PEATONAL</h2>
+        </div>
+      }
+    </div>
 
-        <ion-button expand="block" color="light" class="action-btn" (click)="volverAlScanner()">
-          Siguiente Vehículo
-        </ion-button>
-      </div>
-    }
+    <!-- Botón dinámico textualmente amigable -->
+    <ion-button expand="block" color="light" class="action-btn" (click)="volverAlScanner()">
+      {{ resultado.infoAcceso?.tipoAcceso === 'VEHICULAR' ? 'Siguiente Vehículo' : 'Siguiente Peatón' }}
+    </ion-button>
+  </div>
+}
+
 
     <!-- CASO B: ACCESO RECHAZADO (PANTALLA ROJA) -->
     @if (resultado && !resultado?.abrir) {

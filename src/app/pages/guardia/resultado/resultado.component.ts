@@ -52,6 +52,7 @@ export class ResultadoComponent implements OnInit {
         next: (resp: any) => {
           this.isLoading = false;
           this.resultado = resp; // { abrir: true/false, infoAcceso, mensaje }
+          console.log(resp)
         },
         error: (err) => {
           this.isLoading = false;
