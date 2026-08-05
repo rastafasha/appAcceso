@@ -51,6 +51,7 @@ export class PerfilComponent implements OnInit {
     private fileUploadService: FileUploadService
   ) {
     addIcons({ homeOutline, carOutline, trashOutline, addCircleOutline, personOutline, mailOutline, phonePortraitOutline });
+    this.inicializarFormularioPropiedad();
   }
 
   ngOnInit() {
@@ -63,7 +64,7 @@ export class PerfilComponent implements OnInit {
         this.propietarioId = resp.uid; // Guardamos el ID del propietario para futuras operaciones
         this.datosUsuario = resp;
         // 1. Inicializar el formulario de propiedad antes de rellenarlo
-        this.inicializarFormularioPropiedad();
+        
 
         // 2. Buscar si el propietario ya tiene casa asignada en Atlas
         this.cargarDatosPropiedad();

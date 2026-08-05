@@ -11,9 +11,7 @@ export const environment = {
   mediaUrlRemoto: 'https://res.cloudinary.com/dmv6aukai/image/upload/v1741275492/appaccesoqr/uploads',
 
   clientId: '',
-  clientGoogle: ' ',
-
-  
+  clientGoogle: '',
 
 };
 

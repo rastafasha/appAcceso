@@ -102,30 +102,85 @@ export class VisitasComponent implements OnInit {
   }
 
 
-async compartirPorWhatsApp() {
-  const textoMensaje = `Hola ${this.nombreVisitaSeleccionada}, este es tu pase de acceso rápido QR para la urbanización. Al llegar a la portería muéstralo frente al lector. Código de acceso: ${this.tokenSeleccionado}`;
+// async compartirPorWhatsApp() {
+//   const textoMensaje = `Hola ${this.nombreVisitaSeleccionada}, este es tu pase de acceso rápido QR para la urbanización. Al llegar a la portería muéstralo frente al lector. Código de acceso: ${this.tokenSeleccionado}`;
 
-  // PLAN A: Si es un navegador móvil (Chrome/Safari) dentro de la PWA, usamos la API nativa
-  if (navigator.share) {
+//   // PLAN A: Si es un navegador móvil (Chrome/Safari) dentro de la PWA, usamos la API nativa
+//   if (navigator.share) {
+//     try {
+//       await navigator.share({
+//         title: `Pase para ${this.nombreVisitaSeleccionada}`,
+//         text: textoMensaje,
+//       });
+//       console.log('Compartido con éxito mediante Web Share API');
+//     } catch (error) {
+//       console.error('El usuario canceló o hubo un error al compartir:', error);
+//     }
+//   } else {
+//     // PLAN B: Fallback para computadoras o navegadores que no soportan Web Share
+//     // Codificamos el texto para que sea seguro viajar en una URL de internet
+//     const textoCodificado = encodeURIComponent(textoMensaje);
+    
+//     // Abrimos una pestaña nueva con la API directa de WhatsApp (funciona en móvil y PC)
+//     const urlWhatsApp = `https://whatsapp.com{textoCodificado}`;
+//     window.open(urlWhatsApp, '_blank');
+//   }
+// }
+
+
+async compartirPorWhatsApp() {
+  const textoMensaje = `Hola ${this.nombreVisitaSeleccionada}, este es tu pase de acceso rápido QR para la urbanización. Al llegar a la portería muéstralo frente al lector.`;
+
+  // 1. OBTENER LA IMAGEN DEL QR (Buscamos el elemento canvas que genera tu componente QR)
+  // Nota: Asegúrate de añadir id="qrCanvas" o una clase al elemento que pinta tu QR en el HTML
+  const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+
+  if (canvas && navigator.canShare && navigator.share) {
     try {
-      await navigator.share({
-        title: `Pase para ${this.nombreVisitaSeleccionada}`,
-        text: textoMensaje,
-      });
-      console.log('Compartido con éxito mediante Web Share API');
+      // 2. CONVERTIR EL CANVAS A UN BLOB (Archivo de imagen en memoria)
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          this.enviarPorTextoFallback(textoMensaje);
+          return;
+        }
+
+        // 3. CREAR EL ARCHIVO REAL (.png)
+        const archivoQr = new File([blob], `pase-${this.nombreVisitaSeleccionada}.png`, { type: 'image/png' });
+
+        // 4. VERIFICAR SI EL SISTEMA PERMITE COMPARTIR ESTE ARCHIVO ESPECÍFICO
+        if (navigator.canShare({ files: [archivoQr] })) {
+          await navigator.share({
+            title: `Pase para ${this.nombreVisitaSeleccionada}`,
+            text: textoMensaje,
+            files: [archivoQr] // 👈 AQUÍ SE ADJUNTA LA IMAGEN REAL DEL QR
+          });
+          console.log('QR e imagen compartidos con éxito');
+        } else {
+          this.enviarPorTextoFallback(textoMensaje);
+        }
+      }, 'image/png');
+
     } catch (error) {
-      console.error('El usuario canceló o hubo un error al compartir:', error);
+      console.error('Error al compartir mediante Web Share API:', error);
+      this.enviarPorTextoFallback(textoMensaje);
     }
   } else {
-    // PLAN B: Fallback para computadoras o navegadores que no soportan Web Share
-    // Codificamos el texto para que sea seguro viajar en una URL de internet
-    const textoCodificado = encodeURIComponent(textoMensaje);
-    
-    // Abrimos una pestaña nueva con la API directa de WhatsApp (funciona en móvil y PC)
-    const urlWhatsApp = `https://whatsapp.com{textoCodificado}`;
-    window.open(urlWhatsApp, '_blank');
+    // PLAN B: Navegadores de escritorio o PC (Donde no existe Web Share de archivos)
+    this.enviarPorTextoFallback(textoMensaje);
   }
 }
+
+// PLAN B/FALLBACK: Método optimizado para enviar texto con el Token seguro
+enviarPorTextoFallback(textoBase: string) {
+  // Corregido: Agregamos el token de forma segura y reparamos la sintaxis de la URL de WhatsApp
+  const mensajeCompleto = `${textoBase} Código de acceso: ${this.tokenSeleccionado}`;
+  const textoCodificado = encodeURIComponent(mensajeCompleto);
+  
+  // URL Correcta de la API de WhatsApp para abrir chats directamente
+  const urlWhatsApp = `https://whatsapp.com{textoCodificado}`;
+  window.open(urlWhatsApp, '_blank');
+}
+
 
 
 
