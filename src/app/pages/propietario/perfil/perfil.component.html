@@ -6,15 +6,21 @@
 
 <ion-content class="ion-padding profile-background">
   <div class="profile-wrapper">
-
     <!-- SECCIÓN 1: DATOS PERSONALES DEL PROPIETARIO -->
     <ion-card class="info-card">
       <ion-card-content>
         <div class="user-header">
-          <ion-icon name="person-outline" class="main-icon"></ion-icon>
+          <!-- CONTENEDOR DEL AVATAR INTERACTIVO -->
+          <div class="avatar-container" (click)="abrirModalPerfil(true)">
+            <img [src]="datosUsuario.img | imagenPipe: 'usuarios'" alt="Foto de perfil" class="profile-avatar" />
+            <div class="edit-overlay">
+              <ion-icon name="camera-outline"></ion-icon>
+            </div>
+          </div>
           <div class="user-details">
             <h2>{{ datosUsuario.first_name }} {{ datosUsuario.last_name }}</h2>
             <p><ion-icon name="mail-outline"></ion-icon> {{ datosUsuario.email }}</p>
+            <p><ion-icon name="person-outline"></ion-icon> {{ datosUsuario.numdoc }}</p>
             <p><ion-icon name="phone-portrait-outline"></ion-icon> {{ datosUsuario.telefono }}</p>
             <ion-badge color="success" class="ion-margin-top">Residente Autorizado</ion-badge>
             <p *ngIf="propiedad"><ion-icon name="home-outline"></ion-icon> {{ propiedad.calleOBloque }}</p>
@@ -23,13 +29,51 @@
         </div>
       </ion-card-content>
     </ion-card>
+    <!-- MODAL PARA CAMBIAR LA IMAGEN DE PERFIL -->
+    <ion-modal [isOpen]="isModalOpen" (didDismiss)="abrirModalPerfil(false)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>Actualizar Imagen</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="abrirModalPerfil(false)">Cerrar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding ion-text-center">
+          <h3>Selecciona tu nueva foto</h3>
+
+          <!-- Vista previa de la imagen seleccionada temporalmente -->
+          <div class="preview-container ion-margin-top ion-margin-bottom">
+            <img [src]="imgTemp || datosUsuario.img || 'assets/img/default.png'" class="modal-preview-avatar" />
+          </div>
+
+          <!-- Input de archivo oculto nativo -->
+          <input type="file" #fileInput (change)="cambiarImagen(fileInput.files)" accept="image/*"
+            style="display: none;" />
+
+          <!-- Botones de acción -->
+          <ion-button expand="block" fill="outline" color="primary" (click)="fileInput.click()">
+            <ion-icon slot="start" name="image-outline"></ion-icon>
+            Buscar en Galería
+          </ion-button>
+
+          <ion-button expand="block" color="success" class="ion-margin-top" [disabled]="!imagenSubir"
+            (click)="subirImagen()">
+            <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+            Guardar Cambios
+          </ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
     <!-- 🌟 SECCIÓN 2: FORMULARIO REACTIVO DE PROPIEDAD -->
     <h3 class="block-title"><ion-icon name="home-outline"></ion-icon> Mi Propiedad / Vivienda</h3>
     <ion-card class="info-card">
       <ion-card-content>
         <form [formGroup]="propiedadForm" (ngSubmit)="guardarPropiedad()">
-          
+
           <div class="form-row">
             <!-- N° Casa -->
             <div class="input-col">
@@ -38,7 +82,7 @@
                 <ion-input type="text" placeholder="Ej: A-12" formControlName="numeroCasa"></ion-input>
               </ion-item>
             </div>
-            
+
             <!-- Calle o Bloque -->
             <div class="input-col">
               <ion-item lines="none" class="mini-input">
@@ -49,12 +93,7 @@
           </div>
 
           <!-- Botón dinámico según el estado -->
-          <ion-button 
-            expand="block" 
-            type="submit" 
-            [color]="esEdicion ? 'primary' : 'success'" 
-            class="add-btn ion-margin-top"
-            [disabled]="propiedadForm.invalid || isLoadingPropiedad">
+          <ion-button expand="block" type="submit" [color]="esEdicion ? 'primary' : 'success'" class="add-btn ion-margin-top" [disabled]="propiedadForm.invalid || isLoadingPropiedad">
             <ion-icon [name]="esEdicion ? 'create-outline' : 'save-outline'" slot="start"></ion-icon>
             {{ isLoadingPropiedad ? 'Procesando...' : (esEdicion ? 'Actualizar Datos de Vivienda' : 'Registrar Mi Vivienda') }}
           </ion-button>
@@ -65,7 +104,7 @@
 
     <!-- SECCIÓN 3: VEHÍCULOS AUTORIZADOS (Se bloquea si aún no hay propiedad registrada) -->
     <h3 class="block-title"><ion-icon name="car-outline"></ion-icon> Vehículos Registrados (Acceso Fijo)</h3>
-    
+
     <div *ngIf="propiedad; else registrarViviendaPrimero">
       <ion-list class="custom-list" *ngIf="propiedad.vehiculosPropietario?.length > 0; else sinCarros">
         <ion-item-sliding *ngFor="let auto of propiedad.vehiculosPropietario">
@@ -95,14 +134,19 @@
           <h4 class="form-title">Vincular Nuevo Vehículo</h4>
           <form [formGroup]="vehiculoForm" (ngSubmit)="agregarVehiculo()">
             <div class="form-row">
-              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Placa" formControlName="placa"></ion-input></ion-item>
-              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Marca" formControlName="marca"></ion-input></ion-item>
+              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Placa"
+                  formControlName="placa"></ion-input></ion-item>
+              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Marca"
+                  formControlName="marca"></ion-input></ion-item>
             </div>
             <div class="form-row ion-margin-top">
-              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Modelo" formControlName="modelo"></ion-input></ion-item>
-              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Color" formControlName="color"></ion-input></ion-item>
+              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Modelo"
+                  formControlName="modelo"></ion-input></ion-item>
+              <ion-item lines="none" class="mini-input"><ion-input type="text" placeholder="Color"
+                  formControlName="color"></ion-input></ion-item>
             </div>
-            <ion-button expand="block" type="submit" color="primary" class="add-btn ion-margin-top" [disabled]="vehiculoForm.invalid || isLoadingVehiculo">
+            <ion-button expand="block" type="submit" color="primary" class="add-btn ion-margin-top"
+              [disabled]="vehiculoForm.invalid || isLoadingVehiculo">
               <ion-icon name="add-circle-outline" slot="start"></ion-icon>
               {{ isLoadingVehiculo ? 'Guardando...' : 'Agregar Vehículo Fijo' }}
             </ion-button>
@@ -114,7 +158,8 @@
     <!-- Fallback si la casa no existe en Atlas -->
     <ng-template #registrarViviendaPrimero>
       <ion-card class="warning-card ion-padding">
-        <p class="empty-text ion-text-center">⚠️ Debes registrar tu número de casa y bloque arriba antes de poder asociar tus vehículos fijos.</p>
+        <p class="empty-text ion-text-center">⚠️ Debes registrar tu número de casa y bloque arriba antes de poder
+          asociar tus vehículos fijos.</p>
       </ion-card>
     </ng-template>
 

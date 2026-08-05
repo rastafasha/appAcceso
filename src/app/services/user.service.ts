@@ -76,11 +76,13 @@ export class UserService {
         map( resp =>{
           const usuarios = resp.usuarios.map(
             user => new User(
-              user.username,
+              user.first_name,
+              user.last_name,
               user.email,
-              user.terminos,
+              user.numdoc,
+              user.telefono,
+              user.activo,
               '',
-              user.google,
               user.role,
               user.uid
             ));

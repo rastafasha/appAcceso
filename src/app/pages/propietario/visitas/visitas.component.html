@@ -7,8 +7,8 @@
     </ion-button>
   </ion-toolbar>
 </ion-header>
-
-<ion-content class="ion-padding visitas-background">
+<app-loading *ngIf="isLoading"></app-loading>
+<ion-content class="ion-padding visitas-background" *ngIf="!isLoading">
   <div class="visitas-wrapper">
 
     <!-- Listado del historial de pases -->

@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { 
-  IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardContent, 
-  IonItem, IonLabel, IonInput, IonButton, IonIcon, IonList, IonItemSliding, 
-  IonItemOptions, IonItemOption, IonBadge 
-} from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardContent, IonItem, IonLabel, IonInput, IonButton, IonIcon, IonList, IonItemSliding, IonItemOptions, IonItemOption, IonBadge, IonModal, IonButtons } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { homeOutline, carOutline, trashOutline, addCircleOutline, personOutline, mailOutline, phonePortraitOutline } from 'ionicons/icons';
 import { AuthService } from '../../../services/auth.service';
 import { PropertyService } from '../../../services/property.service';
+import { UserService } from '../../../services/user.service';
+import { FileUploadService } from '../../../services/file-upload.service';
+import { ImagenPipe } from '../../../pipes/imagen.pipe';
 
 @Component({
   selector: 'app-perfil',
@@ -18,9 +17,11 @@ import { PropertyService } from '../../../services/property.service';
   styleUrls: ['./perfil.component.scss'],
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule, IonContent, IonHeader, IonToolbar, 
-    IonTitle, IonCard, IonCardContent, IonItem, IonLabel, IonInput, 
-    IonButton, IonIcon, IonList, IonItemSliding, IonItemOptions, IonItemOption, IonBadge
+    CommonModule, ReactiveFormsModule, IonContent, IonHeader, IonToolbar,
+    IonTitle, IonCard, IonCardContent, IonItem, IonLabel, IonInput,
+    IonButton, IonIcon, IonList, IonItemSliding, IonItemOptions, IonItemOption, IonBadge,
+    IonModal,
+    IonButtons, ImagenPipe
   ]
 })
 export class PerfilComponent implements OnInit {
@@ -33,11 +34,21 @@ export class PerfilComponent implements OnInit {
   isLoadingVehiculo = false;
   esEdicion = false; // Bandera para alternar entre guardar nuevo o actualizar existente
   isLoading = false;
+  usuarioId!: string;
+
+  cargandoImagen = false;
+  perfilSeleccionado: any = null;
+
+  isModalOpen: boolean = false;
+  imagenSubir!: File;
+  imgTemp: string | ArrayBuffer | null = null;
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private http: HttpClient,
     private propertyService: PropertyService,
+    private userService: UserService,
+    private fileUploadService: FileUploadService
   ) {
     addIcons({ homeOutline, carOutline, trashOutline, addCircleOutline, personOutline, mailOutline, phonePortraitOutline });
   }
@@ -46,14 +57,18 @@ export class PerfilComponent implements OnInit {
     // 1. Obtener la data real del usuario autenticado
     const usuarioJSON = localStorage.getItem('usuario');
     if (usuarioJSON) {
-      this.datosUsuario = JSON.parse(usuarioJSON);
-      this.propietarioId = this.datosUsuario.uid;
-      
-      // 1. Inicializar el formulario de propiedad antes de rellenarlo
-      this.inicializarFormularioPropiedad();
-      
-      // 2. Buscar si el propietario ya tiene casa asignada en Atlas
-      this.cargarDatosPropiedad();
+      this.usuarioId = JSON.parse(usuarioJSON).uid;
+
+      this.userService.getUserById(this.usuarioId).subscribe((resp: any) => {
+        this.propietarioId = resp.uid; // Guardamos el ID del propietario para futuras operaciones
+        this.datosUsuario = resp;
+        // 1. Inicializar el formulario de propiedad antes de rellenarlo
+        this.inicializarFormularioPropiedad();
+
+        // 2. Buscar si el propietario ya tiene casa asignada en Atlas
+        this.cargarDatosPropiedad();
+      })
+
     }
 
     // 2. Formulario reactivo para registrar un nuevo vehículo (Arreglo)
@@ -79,7 +94,7 @@ export class PerfilComponent implements OnInit {
           if (resp.ok && resp.property) {
             this.propiedad = resp.property;
             this.esEdicion = true;
-            
+
             // Seteamos los valores en los campos reactivos del formulario
             this.propiedadForm.patchValue({
               numeroCasa: this.propiedad.numeroCasa,
@@ -148,17 +163,17 @@ export class PerfilComponent implements OnInit {
       });
     }
   }
-  
+
 
   agregarVehiculo() {
     if (this.vehiculoForm.invalid || !this.propiedad) return;
 
     this.isLoading = true;
-     const payload = {
-        ...this.vehiculoForm.value,
-        propietarioId: this.propietarioId,
-        _id: this.propiedad._id
-      };
+    const payload = {
+      ...this.vehiculoForm.value,
+      propietarioId: this.propietarioId,
+      _id: this.propiedad._id
+    };
     this.propertyService.addVehiculo(payload).subscribe({
       next: (resp: any) => {
         this.isLoading = false;
@@ -180,7 +195,7 @@ export class PerfilComponent implements OnInit {
 
     // Llamamos al método DELETE especializado pasándole el ID de la casa y el _id del carro
 
-    this.propertyService.deleteVehiculo(this.propiedad._id,vehiculoId).subscribe({
+    this.propertyService.deleteVehiculo(this.propiedad._id, vehiculoId).subscribe({
       next: (resp: any) => {
         if (resp.ok) {
           // Filtramos localmente el carro eliminado para removerlo de la vista sin recargar la página
@@ -191,5 +206,56 @@ export class PerfilComponent implements OnInit {
       },
       error: (err) => console.error('Error al remover el vehículo:', err)
     });
+  }
+
+  // Función para abrir y cerrar el modal de manera limpia
+  abrirModalPerfil(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+    if (!isOpen) {
+      // Si cierran el modal, limpiamos la previsualización temporal
+      this.imgTemp = null;
+      (this.imagenSubir as any) = null;
+    }
+  }
+
+  cambiarImagen(files: FileList | null): void {
+    if (!files || files.length === 0) {
+      this.imgTemp = null;
+      return;
+    }
+
+    // Tomamos el primer archivo seleccionado
+    const file: File = files[0];
+    this.imagenSubir = file;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      this.imgTemp = reader.result;
+    };
+  }
+
+  subirImagen() {
+    this.cargandoImagen = true;
+    this.fileUploadService
+      .actualizarFoto(this.imagenSubir, 'usuarios', this.propietarioId)
+      .then(img => {
+        this.perfilSeleccionado.img = img;
+        this.cargandoImagen = false;
+        // this.toastrService.success('La imagen fue actualizada', 'Guardado', {
+        //   timeOut: 3000,
+        //   positionClass: 'toast-bottom-right'
+        // });
+
+      }).catch(err => {
+        this.cargandoImagen = false;
+        // Swal.fire('Error', 'No se pudo subir la imagen', 'error');
+        // this.toastrService.error('No se pudo subir la imagen', 'Error', {
+        //   timeOut: 3000,
+        //   positionClass: 'toast-bottom-right'
+        // });
+
+      })
   }
 }

@@ -181,3 +181,59 @@
     --placeholder-color: #95a5a6; 
   }
 }
+
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Contenedor circular del avatar */
+.avatar-container {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border: 3px solid var(--ion-color-primary, #3880ff);
+  flex-shrink: 0;
+
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Capa oscura con icono de cámara */
+  .edit-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.2rem;
+  }
+}
+
+/* Vista previa dentro del modal */
+.preview-container {
+  display: flex;
+  justify-content: center;
+  
+  .modal-preview-avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--ion-color-success, #2dd36f);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+}
+
